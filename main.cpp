@@ -1,12 +1,41 @@
 #include "cmainwindow.h"
 
 #include <QApplication>
+#include <QSettings>
+
+#include "csplashscreen.h"
 
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	cMainWindow w;
-	w.show();
+
+	a.setApplicationVersion(APP_VERSION);
+	a.setApplicationDisplayName("fontManager");
+	a.setOrganizationName("WIN-DESIGN");
+	a.setOrganizationDomain("windesign.at");
+	a.setApplicationName("fontManager");
+
+	QSettings		settings;
+
+	QPixmap			pixmap(":/images/splash.png");
+	QFont			splashFont;
+	cSplashScreen*	lpSplash	= new cSplashScreen(pixmap, splashFont);
+
+	lpSplash->show();
+	a.processEvents();
+
+	lpSplash->showStatusMessage(QObject::tr("<center>initializing...</denter>"));
+
+	cMainWindow w(lpSplash);
+
+	if(settings.value("main/maximized").toBool())
+		w.showMaximized();
+	else
+		w.show();
+
+	lpSplash->finish(&w);
+	delete lpSplash;
+
 	return a.exec();
 }
