@@ -29,11 +29,17 @@ private:
 	QColor			m_backgroundColor;
 	QColor			m_foregroundColor;
 	QColor			m_defaultColor;
+	QColor			m_selectedColor;
 
 	void			setColor();
 
 protected:
-	void			mouseMoveEvent(QMouseEvent* event) override;
+	void			enterEvent(QEvent *ev) override;
+	void			leaveEvent(QEvent *ev) override;
+
+public slots:
+	void			windowEntered();
+	void			windowLeft();
 };
 
 #endif // CFONTVIEW_H

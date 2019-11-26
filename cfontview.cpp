@@ -1,6 +1,8 @@
 #include "cfontview.h"
 #include "ui_cfontview.h"
 
+#include "common.h"
+
 #include <QDebug>
 
 
@@ -14,7 +16,15 @@ cFontView::cFontView(QWidget *parent) :
 	this->setAttribute(Qt::WA_Hover);
 
 	QPalette	palette	= this->palette();
-	m_defaultColor	= palette.color(this->backgroundRole());
+//	m_defaultColor	= palette.color(this->backgroundRole());
+	m_defaultColor	= palette.color(QPalette::Window);
+	m_selectedColor	= palette.color(QPalette::Highlight);
+
+	connect(ui->m_lpFontName,	&cCheckBox::windowEntered,	this,	&cFontView::windowEntered);
+	connect(ui->m_lpFontName,	&cCheckBox::windowLeft,	this,	&cFontView::windowLeft);
+
+	connect(ui->m_lpSampleText,	&cLabel::windowEntered,	this,	&cFontView::windowEntered);
+	connect(ui->m_lpSampleText,	&cLabel::windowLeft,	this,	&cFontView::windowLeft);
 }
 
 cFontView::~cFontView()
@@ -51,23 +61,31 @@ void cFontView::setColor()
 	QString	background;
 
 	if(m_foregroundColor.isValid())
-		foreground	= QString("color: rgba(%1, %2, %3, %4); ").arg(m_foregroundColor.red()).arg(m_foregroundColor.green()).arg(m_foregroundColor.blue()).arg(255);
+		foreground	= "color: " + color2rgba(m_foregroundColor) + "; ";
 
 	if(m_backgroundColor.isValid())
-		background	= QString("background-color: rgba(%1, %2, %3, %4); ").arg(m_backgroundColor.red()).arg(m_backgroundColor.green()).arg(m_backgroundColor.blue()).arg(255);
+		background	= "background-color: " + color2rgba(m_backgroundColor) + "; ";
 
 	if(!foreground.isEmpty() || !background.isEmpty())
 		ui->m_lpSampleText->setStyleSheet("QLabel { " + foreground + background + " }");
 }
 
-void cFontView::mouseMoveEvent(QMouseEvent* event)
+void cFontView::enterEvent(QEvent* /*ev*/)
 {
-qDebug() << event->type();
+	windowEntered();
+}
 
-	if(event->type() == QEvent::Enter)
-		ui->m_lpSampleText->setStyleSheet(QString("QLabel { background-color: rgba(0, 0, 255, 255); }"));
-	else if(event->type() == QEvent::Leave)
-		ui->m_lpSampleText->setStyleSheet(QString("QLabel { background-color: rgba(%1, %2, %3, %4); }").arg(m_defaultColor.red()).arg(m_defaultColor.green()).arg(m_defaultColor.blue()).arg(255));
+void cFontView::leaveEvent(QEvent* /*ev*/)
+{
+	windowLeft();
+}
 
-	event->accept();
+void cFontView::windowEntered()
+{
+	ui->m_lpFontName->setStyleSheet("QCheckBox { background-color: " + color2rgba(m_selectedColor) + "; }");
+}
+
+void cFontView::windowLeft()
+{
+	ui->m_lpFontName->setStyleSheet("QCheckBox { background-color: " + color2rgba(m_defaultColor) + "; }");
 }

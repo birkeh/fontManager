@@ -23,14 +23,20 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ccheckbox.cpp \
     cfontview.cpp \
+    clabel.cpp \
+    common.cpp \
     csplashscreen.cpp \
     main.cpp \
     cmainwindow.cpp
 
 HEADERS += \
+    ccheckbox.h \
     cfontview.h \
+    clabel.h \
     cmainwindow.h \
+    common.h \
     csplashscreen.h
 
 FORMS += \

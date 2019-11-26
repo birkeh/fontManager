@@ -16,8 +16,8 @@ cMainWindow::cMainWindow(cSplashScreen* lpSplashScreen, QWidget *parent) :
 	initUI();
 	createActions();
 
-	m_fontDatabase.addApplicationFont("C:\\Temp\\Fonts\\a song for jennifer.ttf");
-	m_fontDatabase.addApplicationFont("C:\\Temp\\Fonts\\Grunge Handwriting.ttf");
+//	m_fontDatabase.addApplicationFont("C:\\Temp\\Fonts\\a song for jennifer.ttf");
+//	m_fontDatabase.addApplicationFont("C:\\Temp\\Fonts\\Grunge Handwriting.ttf");
 
 	QStringList		families	= m_fontDatabase.families();
 
